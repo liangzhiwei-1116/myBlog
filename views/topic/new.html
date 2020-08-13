@@ -1,0 +1,66 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'body'}}
+<section class="container">
+  <div class="row">
+    <div class="col-md-5">
+      <form action="" method="post" id="topic_form">
+        <div class="form-group">
+          <label for="exampleInputEmail1">选择板块</label>
+          <select class="form-control" name="block">
+            <option value="0">分享</option>
+            <option value="1">问答</option>
+            <option value="2">招聘</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">主题</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="motif" name="motif">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">标题</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="title" name="title">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">内容</label>
+          <textarea class="form-control" rows="6" name="txt" placeholder="在此编写你的说明内容"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">代码</label>
+          <textarea class="form-control" rows="6" name="code" placeholder="在此编写你的代码内容"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default" style="margin-left: 170px">Submit</button>
+        <div style="position: absolute;top: 40px;left:600px;">
+            <img src="../public/img/new_bg4.png">
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{{/block}}
+{{block 'script'}}
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+  <script>
+    $('#topic_form').on('submit', function (e) {
+      e.preventDefault()
+      var formData = $(this).serialize()
+//      console.log('我是'+formData)
+      $.ajax({
+        url: '/topic/new',
+        type: 'post',
+        data: formData,
+        dataType: 'json',
+        success: function (data) {
+          var err_code = data.err_code
+          if (err_code === 0) {
+              alert('提交成功');
+              // 服务端重定向针对异步请求无效
+              window.location.href = '/'
+          }
+        }
+      })
+    })
+  </script>
+  {{/block}}
